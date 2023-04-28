@@ -1,0 +1,32 @@
+<div class="surface-ground flex align-items-center justify-content-center min-h-screen min-w-screen overflow-hidden" style="background-image: url(assets/demo/images/login/login.jpg);">
+    <div class="flex flex-column align-items-center justify-content-center">
+        <div style="">
+            <div class="w-full auth-card py-8 px-5 sm:px-8" style="border-radius:5px">
+                <div class="flex justify-content-center">
+                    <div class="text-center mb-5 auth_logo">
+                        <img src="assets/demo/images/login/user.png" alt="Image" height="50" class="mb-3">
+                    </div>
+                </div>
+                <div class="text-center mb-5">
+                    <div class="text-3xl font-medium mb-3">Bienvenue!</div>
+                    <span class="font-medium">Connectez-vous pour continuer !</span>
+                </div>
+
+                <div>
+                    <label for="email1" class="block text-xl font-medium mb-2">Email</label>
+                    <input id="email1" type="text" placeholder="Email address" pInputText class="w-full md:w-30rem mb-5 form-control" style="padding:1rem">
+
+                    <label for="password1" class="block font-medium text-xl mb-2">Mot de passe</label>
+                    <p-password id="password1" [(ngModel)]="password" placeholder="Password" [toggleMask]="true" styleClass="mb-5" inputStyleClass="w-full p-3 md:w-30rem form-control"></p-password>
+
+                    <div class="flex align-items-center justify-content-between mb-5 gap-5">
+                        <a  [routerLink]="['/auth/register']" class="font-medium no-underline ml-2 text-right cursor-pointer" style="color: var(--primary-color)">Pas de compte ? S'inscrire</a>
+
+                        <a class="font-medium no-underline ml-2 text-right cursor-pointer" style="color: var(--primary-color)">Mot de passe oublié ?</a>
+                    </div>
+                    <button pButton pRipple label="Connexion" class="w-full p-3 text-xl" [routerLink]="['/']"></button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

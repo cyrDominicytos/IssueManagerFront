@@ -1,0 +1,53 @@
+<div class="grid">
+	<div class="col-12">
+		<div class="card">
+			<h5>Liste des tickets</h5>
+			<p-table #dt1 [value]="customers1" dataKey="id" [rows]="10" [loading]="loading" [rowHover]="true" styleClass="p-datatable-gridlines" [paginator]="true" [globalFilterFields]="['name','country.name','representative.name','status']" responsiveLayout="scroll">
+				<ng-template pTemplate="caption">
+					<div class="flex justify-content-between flex-column sm:flex-row">
+						<button pButton label="Clear" class="p-button-outlined mb-2" icon="pi pi-filter-slash" (click)="clear(dt1)"></button>
+						<span class="p-input-icon-left mb-2">
+							<i class="pi pi-search"></i>
+							<input pInputText type="text" #filter (input)="onGlobalFilter(dt1, $event)" placeholder="filtrer ici" class="w-full"/>
+						</span>
+					</div>
+				</ng-template>
+				<ng-template pTemplate="header">
+					<tr>
+						<th style="min-width: 12rem">
+							<div class="flex flex-row justify-content-between gap-5 mt-5">
+									<p-selectButton [options]="ticketStates" [(ngModel)]="filterState" [multiple]="true" optionLabel="name" (onChange)="filterTicketsState()"></p-selectButton>
+									<button pButton pRipple type="button" label="Nouveau ticket" class="p-button-rounded p-button-success" style=" max-width: 200px;" [routerLink]="'/addTicket'"></button>
+							</div>
+						</th>
+					</tr>
+				</ng-template>
+				<ng-template pTemplate="body" let-customer>
+					<tr>
+						<td>
+							<i class="pi" [ngClass]="{'true-icon pi-check-circle text-green-500': customer.verified, 'false-icon pi-times-circle text-pink-500': !customer.verified}"></i>
+							<a style="color:black; padding-left:5px; padding-right: 15px">{{customer.name}}</a>
+							<span [class]="'text-circle m-2 customer-badge status-' + customer.status">question</span>
+							<span [class]="'m-2 customer-badge status-' + customer.status">question</span>
+							<span [class]="'m-2 customer-badge status-' + customer.status">question</span>
+							<br><code class="muted-text" style="opacity:50%"># 1450 ouvert le 26/04/2023 par blondie63</code>
+						</td>
+					</tr>
+					
+				</ng-template>
+				
+				<ng-template pTemplate="emptymessage">
+					<tr>
+						<td colspan="8">Aucun ticket trouvé.</td>
+					</tr>
+				</ng-template>
+				<ng-template pTemplate="loadingbody">
+					<tr>
+						<td colspan="8">Chargement des tickets. Veuillez patienter.</td>
+					</tr>
+				</ng-template>
+    		</p-table>
+		</div>
+
+	</div>
+</div>
