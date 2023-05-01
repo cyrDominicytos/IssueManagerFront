@@ -4,7 +4,8 @@ import { CountryService } from 'src/app/demo/service/country.service';
 import { TagService } from '../../service/tag.service';
 import { TicketService } from '../../service/ticket.service';
 import { Tag, Ticket } from '../../api/Ticket';
-import { Router, NavigationExtras } from '@angular/router';
+import { Router, NavigationExtras, ActivatedRoute } from '@angular/router';
+import { MessageService } from 'primeng/api';
 
 @Component({
     templateUrl: './createticket.component.html'
@@ -20,7 +21,7 @@ export class CreateTicketComponent implements OnInit {
         "created_at":"",
         "tags":[]
     };
-
+    ticketId: number = 0;
     types: any[] = [];
     selectedType: any  = {};
     
@@ -60,10 +61,13 @@ export class CreateTicketComponent implements OnInit {
 
     valueKnob = 20;
 
-    constructor(private countryService: CountryService, private tagService: TagService,private ticketService: TicketService, private router: Router) { }
+    constructor(private countryService: CountryService, private tagService: TagService,private ticketService: TicketService, private router: Router, private notifService: MessageService, private route: ActivatedRoute) { }
 
     ngOnInit() {
         this.getTags();
+        const oldId = this.route.snapshot.paramMap.get('id') as any as number;
+        if(oldId>0)
+            this.getTicket(oldId);
 
         this.countryService.getCountries().then(countries => {
             this.countries = countries;
@@ -132,34 +136,57 @@ export class CreateTicketComponent implements OnInit {
             "tagsId": this.ticket.tags.map(t => t.id)
           }
         this.ticketService.addTicket(data).subscribe(data =>{
-            alert("success !")
-            this.ticketService.getTickets();
-            //this.router.navigate(['/tickets']);
-            this.goToTicketListRoute(true);
+           this.goToTicketListRoute(true);
+        })
+        
+    }
+    updateTicket(){
+        console.log("updateTicket Called")
+        const data = {
+            "content": this.ticket.content,
+            "user_id": 1,
+            "title": this.ticket.title,
+            "tagsId": this.ticket.tags.map(t => t.id)
+          }
+        this.ticketService.updateTicket(data, this.ticket.id).subscribe(data =>{
+           this.goToTicketListRoute(true);
         })
         
     }
 
-     goToTicketListRoute(reload: boolean) {
+    async getTicket(id:number){
+        //load ticket details
+        let t = await this.ticketService.getTicketById(id);
+        if(t!=null) {
+            this.ticket = t;
+        }
+        else 
+            this.router.navigate(['/tickets']);
+        
+     }
+
+     goToTicketListRoute(reload: boolean, message="Nouveau ticket créé !") {
         const navigationExtras: NavigationExtras = {
           state: {
-            reload: reload
+            reload: reload,
+            message: message
           }
         };
         this.router.navigate(['/tickets'], navigationExtras);
       }
-    test(){
-        //alert(this.selectedType.id)
+    notification(message: string, type="success"){
+        this.notifService.add({ key: 'tst', severity: type, summary: 'Success Message', detail: message});
+        console.log("notif");
     }
 
     submitTicket(){
-        alert(this.ticket.id <= 0)
         //submit ticket here ...
         if(parseInt(this.ticket.id+"") <= 0){
             //save ticket
             this.saveTicket();
         }else{
             //update ticket
+            this.updateTicket();
         }
     }
 }

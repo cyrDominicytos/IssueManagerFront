@@ -2,6 +2,7 @@
 	<div class="col-12">
 		<div class="card">
 			<h5>Liste des tickets</h5>
+			<p-toast key="tst"></p-toast>
 			<p-table #dt1 [value]="displayTickets" dataKey="id" [rows]="10" [rowHover]="true" styleClass="p-datatable-gridlines" [paginator]="true" [globalFilterFields]="['name','country.name','representative.name','status']" responsiveLayout="scroll">
 				<ng-template pTemplate="caption">
 					<div class="flex justify-content-between flex-column sm:flex-row">

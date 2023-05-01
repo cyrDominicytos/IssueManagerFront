@@ -11,11 +11,15 @@ import { EventService } from './demo/service/event.service';
 import { IconService } from './demo/service/icon.service';
 import { NodeService } from './demo/service/node.service';
 import { PhotoService } from './demo/service/photo.service';
+import { ToastModule } from 'primeng/toast';
+
 import { UserService } from './demo/service/user.service';
 import { TicketService } from './demo/service/ticket.service';
 import { MenuModule } from 'primeng/menu';
-import { MessageService } from './demo/service/message.service';
+import { MessagesService } from './demo/service/message.service';
 import { TagService } from './demo/service/tag.service';
+import { MessageService } from 'primeng/api';
+
 @NgModule({
     declarations: [
         AppComponent, NotfoundComponent
@@ -23,12 +27,13 @@ import { TagService } from './demo/service/tag.service';
     imports: [
         AppRoutingModule,
         AppLayoutModule,
-        MenuModule
+        MenuModule,
+        ToastModule
     ],
     providers: [
         { provide: LocationStrategy, useClass: HashLocationStrategy },
         CountryService, CustomerService, EventService, IconService, NodeService,
-        PhotoService, ProductService, UserService, TicketService, TagService, MessageService
+        PhotoService, ProductService, UserService, TicketService, TagService, MessagesService, MessageService
     ],
     bootstrap: [AppComponent]
 })

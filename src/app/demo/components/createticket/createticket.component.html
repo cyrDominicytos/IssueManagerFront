@@ -1,12 +1,16 @@
 <div class="grid p-fluid">
 	<div class="col-12 md:col-12">
-		<div class="card">		
-			<h5 class="card-title" style="margin-bottom: 30px;">Nouveau ticket</h5>
+		<div class="card">	
+			<div *ngIf="ticket.id > 0; else elseifBlock">
+				<h5 class="card-title" style="margin-bottom: 30px;">Editer ticket</h5>
+            </div>
+            <ng-template #elseifBlock>
+				<h5 class="card-title" style="margin-bottom: 30px;">Nouveau ticket</h5>
+            </ng-template>	
 			<span class="p-float-label">
 				<input [(ngModel)]="ticket.title" id="float-input" type="text" pInputText>
 				<label for="float-input">Titre du ticket</label>
 			</span>
-
 			<!--<h6>Type de ticket</h6>
 			<p-dropdown [options]="types" [(ngModel)]="selectedType" placeholder="Choisissez le type de ticket" [showClear]="true" (onChange)="test()"></p-dropdown>
 		-->

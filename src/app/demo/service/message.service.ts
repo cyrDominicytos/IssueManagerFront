@@ -6,7 +6,7 @@ import { Observable, of } from 'rxjs';
 import { Message } from '../api/Message';
 
 @Injectable()
-export class MessageService {
+export class MessagesService {
     messages: Message[][] = [];
     message!:  Message;
     constructor(private http: HttpClient) { }

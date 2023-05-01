@@ -25,6 +25,7 @@ import { RadioButtonModule } from 'primeng/radiobutton';
 import { ColorPickerModule } from 'primeng/colorpicker';
 import { ToggleButtonModule } from 'primeng/togglebutton';
 import { SliderModule } from 'primeng/slider';
+import { ToastModule } from 'primeng/toast';
 
 @NgModule({
 	imports: [
@@ -52,7 +53,8 @@ import { SliderModule } from 'primeng/slider';
 		ListboxModule,
 		SelectButtonModule,
 		CheckboxModule,
-		ButtonModule
+		ButtonModule,
+		ToastModule
 	],
 	declarations: [CreateTicketComponent]
 })

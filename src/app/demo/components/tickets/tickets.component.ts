@@ -55,7 +55,7 @@ export class TicketsComponent implements OnInit {
 
     @ViewChild('filter') filter!: ElementRef;
 
-    constructor(private customerService: CustomerService, private productService: ProductService, private ticketService: TicketService, private route: ActivatedRoute) { }
+    constructor(private customerService: CustomerService, private productService: ProductService, private ticketService: TicketService, private route: ActivatedRoute, private notifService: MessageService) { }
 
     ngOnInit() {
         this.customerService.getCustomersLarge().then(customers => {
@@ -94,15 +94,14 @@ export class TicketsComponent implements OnInit {
             { name: 'Ouvert', value: 1 },
             { name: 'Fermé', value: 2 }
         ];
-
-        if(this.tickets.length == 0 || history.state.reload)
-            this.getTickets();
-        
+   
+        this.getTickets();
+        this.notification();
     }
 
     //load ticket list 
     async getTickets() {
-       console.log("condition ",this.ticketService.tickets.length == 0 || history.state.reload)
+
         if(this.ticketService.tickets.length == 0 || history.state.reload == true)
         {
             console.log("Loading tickets... yes")
@@ -136,7 +135,15 @@ export class TicketsComponent implements OnInit {
             this.displayTickets =  this.tickets.filter(t=> t.state==="CLOSED");
         }
     }
-
+    notification(type="success"){
+       if(history.state.reload === true){
+        //alert(history.state.reload)
+            history.state.reload = null
+           // alert(history.state.reload)
+            console.log("should notify success operation !", history.state.reload)
+        this.notifService.add({ key: 'tst', severity: type, summary: 'Success Message', detail: history.state.message});
+       }
+    }
    
     onSort() {
         this.updateRowGroupMetaData();

@@ -13,7 +13,7 @@
                     </div>
                 </div>                
                <div>
-                   <button [routerLink]="'/addTicket'" pButton pRipple type="button" label="Editer" title="Editer ce ticket" icon="pi pi-pencil" class="p-button-rounded"></button>
+                   <button [routerLink]="['/updateTicket', ticket.id]" pButton pRipple type="button" label="Editer" title="Editer ce ticket" icon="pi pi-pencil" class="p-button-rounded"></button>
                    <button [routerLink]="'/addTicket'" pButton pRipple type="button" label="ticket" title="Créer un ticket" icon="pi pi-plus" class="p-button-rounded p-button-success"></button>
                </div> 
 
@@ -53,13 +53,13 @@
                 <p-chip label="Onyama Limbas" image="assets/demo/images/avatar/onyamalimba.png" styleClass="m-1"></p-chip>
             </div>
             <div class="flex flex-wrap gap-2 mb-2 pb-2">
-                <p-multiSelect [options]="availableSupport" [(ngModel)]="selectedSupport" placeholder="assigner à des suppports" optionLabel="name" class="multiselect-custom" display="chip">
+                <!--<p-multiSelect [options]="availableSupport" [(ngModel)]="selectedSupport" placeholder="assigner à des suppports" optionLabel="name" class="multiselect-custom" display="chip">
                     <ng-template let-country pTemplate="item">
                         <div class="flex align-items-center">
                             <span [class]="'ml-2 generic-badge'" [style]="'color='+country.color +' background='+country.background">{{country.name}}</span>
                         </div>
                     </ng-template>
-                </p-multiSelect>
+                </p-multiSelect>-->
                 <button  pButton pRipple type="button" title="Attribuer le ticket aux supports" icon="pi pi-plus" class="p-button p-button-success"></button>
             </div>
             <hr/>
@@ -69,13 +69,13 @@
                 <span *ngFor="let tag of ticket.tags" [class]="'m-2 customer-badge'" [style.color]="tag.textColor"  [style.background]="tag.backgroundColor">{{tag.name}}</span>
             </div> 
             <div class="flex flex-wrap gap-2 mb-2 pb-2">
-                <p-multiSelect [options]="availableSupport" [(ngModel)]="selectedSupport" placeholder="assigner à des suppports" optionLabel="name" class="multiselect-custom" display="chip">
+                <!--<p-multiSelect [options]="availableSupport" [(ngModel)]="selectedSupport" placeholder="assigner à des suppports" optionLabel="name" class="multiselect-custom" display="chip">
                     <ng-template let-country pTemplate="item">
                         <div class="flex align-items-center">
                             <span [class]="'ml-2 generic-badge'" [style]="'color='+country.color +' background='+country.background">{{country.name}}</span>
                         </div>
                     </ng-template>
-                </p-multiSelect>
+                </p-multiSelect>-->
                 <button  pButton pRipple type="button" title="Ajouter des tags aux ticket" icon="pi pi-plus" class="p-button p-button-success"></button>
             </div>
             <hr/>

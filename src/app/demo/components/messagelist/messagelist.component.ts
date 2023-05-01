@@ -9,7 +9,7 @@ import { UserService } from 'src/app/demo/service/user.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Ticket } from '../../api/Ticket';
 import { TicketService } from '../../service/ticket.service';
-import { MessageService } from '../../service/message.service';
+import { MessagesService } from '../../service/message.service';
 import { Message } from '../../api/Message';
 
 
@@ -20,7 +20,7 @@ interface expandedRows {
 
 @Component({
     templateUrl: './messagelist.component.html',
-    providers: [MessageService, ConfirmationService]
+    providers: [MessagesService, ConfirmationService]
 })
 export class MessageListComponent implements OnInit {
     ticketId: number = 0;
@@ -62,7 +62,7 @@ export class MessageListComponent implements OnInit {
 
     @ViewChild('filter') filter!: ElementRef;
 
-    constructor(private customerService: CustomerService, private productService: ProductService, private route: ActivatedRoute, private router: Router, private ticketService: TicketService, private messageService: MessageService) { }
+    constructor(private customerService: CustomerService, private productService: ProductService, private route: ActivatedRoute, private router: Router, private ticketService: TicketService, private messageService: MessagesService) { }
 
     ngOnInit() {
         this.ticketId = this.route.snapshot.paramMap.get('id') as any as number;
@@ -118,7 +118,7 @@ export class MessageListComponent implements OnInit {
     async getTicketMessages() {
         console.log("Loading messages...")
          //load ticket messages (take it in service storage if it's already loaded or perfom server-side request to load it)
-         await this.messageService.getTicketMessages(this.ticketId).subscribe(data => {
+         await this.messageService.getTicketMessages(this.ticketId).subscribe((data) => {
             this.messages = data as Message[];
             this.loadingMessage = false;
             this.comment = "";
@@ -133,7 +133,7 @@ export class MessageListComponent implements OnInit {
             "ticketId": this.ticketId,
             "userId": 1
           }
-        this.messageService.addMessage(data).subscribe(data =>{
+        this.messageService.addMessage(data).subscribe((data: any) =>{
             this.getTicketMessages();
         })
         

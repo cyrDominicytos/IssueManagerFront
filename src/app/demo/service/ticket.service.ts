@@ -3,11 +3,13 @@ import { Injectable } from '@angular/core';
 import { environment } from 'src/environments/environment';
 import { Ticket } from '../api/Ticket';
 import { Observable, of } from 'rxjs';
-
+import { Message, MessageService } from 'primeng/api';
 @Injectable()
 export class TicketService {
     tickets: Ticket[] = [];
     ticket!:  Ticket;
+    notif: MessageService = new MessageService();
+
     constructor(private http: HttpClient) { }
 
        getTickets(refresh = false) {
@@ -46,4 +48,30 @@ export class TicketService {
         console.log("update_tikcet", data)
         return this.http.put(environment.apiBaseUrl+'tickets/'+id, data);
       }
+
+
+
+
+
+
+
+
+
+
+
+      showInfoViaToast(message: string) {
+        this.notif.add({ key: 'tst', severity: 'info', summary: 'Info Message', detail: message});
+    }
+
+    showWarnViaToast(message: string) {
+        this.notif.add({ key: 'tst', severity: 'warn', summary: 'Warn Message', detail: message });
+    }
+
+    showErrorViaToast(message: string) {
+        this.notif.add({ key: 'tst', severity: 'error', summary: 'Error Message', detail: message });
+    }
+
+    showSuccessViaToast(message: string) {
+        this.notif.add({ key: 'tst', severity: 'success', summary: 'Success Message', detail: message });
+    }
 }

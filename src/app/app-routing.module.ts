@@ -20,6 +20,7 @@ import { AppLayoutComponent } from "./layout/app.layout.component";
                     { path: 'tickets', loadChildren: () => import('./demo/components/tickets/tickets.module').then(m => m.TicketsModule) },
                     { path: 'tickets/:id', loadChildren: () => import('./demo/components/messagelist/messagelist.module').then(m => m.MessageListModule) },
                     { path: 'addTicket', loadChildren: () => import('./demo/components/createticket/createticket.module').then(m => m.CreateTicketModule) },
+                    { path: 'updateTicket/:id', loadChildren: () => import('./demo/components/createticket/createticket.module').then(m => m.CreateTicketModule) },
                     { path: 'messages', loadChildren: () => import('./demo/components/messagelist/messagelist.module').then(m => m.MessageListModule) }
 
                 ]
