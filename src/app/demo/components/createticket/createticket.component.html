@@ -3,23 +3,23 @@
 		<div class="card">		
 			<h5 class="card-title" style="margin-bottom: 30px;">Nouveau ticket</h5>
 			<span class="p-float-label">
-				<input id="float-input" type="text" pInputText>
+				<input [(ngModel)]="ticket.title" id="float-input" type="text" pInputText>
 				<label for="float-input">Titre du ticket</label>
 			</span>
 
-			<h6>Type de ticket</h6>
+			<!--<h6>Type de ticket</h6>
 			<p-dropdown [options]="types" [(ngModel)]="selectedType" placeholder="Choisissez le type de ticket" [showClear]="true" (onChange)="test()"></p-dropdown>
-
+		-->
 
 			<h6>Description</h6>
-			<textarea rows="5" cols="20" placeholder="Your Message" pInputTextarea class="block d-block form-control" style="width:100%" ></textarea>
+			<textarea [(ngModel)]="ticket.content" rows="5" cols="20" placeholder="Your Message" pInputTextarea class="block d-block form-control" style="width:100%" ></textarea>
 
 			<h6>Ajouter des tags</h6>
-			<p-multiSelect [options]="countries" [(ngModel)]="selectedMulti" placeholder="tags" optionLabel="name" class="multiselect-custom" display="chip">
-				<ng-template let-country pTemplate="item">
+			<p-multiSelect [options]="tags" [(ngModel)]="ticket.tags" placeholder="tags" optionLabel="name" class="multiselect-custom" display="chip">
+				<ng-template let-tag pTemplate="item">
 					<div class="flex align-items-center">
 						<!--<img src="assets/demo/images/flag/flag_placeholder.png" [class]="'flag flag-' + country.code.toLowerCase()" style="width:21px"/>-->
-						<span [class]="'ml-2 generic-badge'" [style]="'color='+country.color +' background='+country.background">{{country.name}}</span>
+						<span [class]="'ml-2 generic-badge'" [style.color]="tag.textColor"  [style.background]="tag.backgroundColor">{{tag.name}}</span>
 					</div>
 				</ng-template>
 			</p-multiSelect>

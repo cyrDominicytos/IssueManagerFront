@@ -4,8 +4,14 @@ import { CustomerService } from 'src/app/demo/service/customer.service';
 import { Product } from 'src/app/demo/api/product';
 import { ProductService } from 'src/app/demo/service/product.service';
 import { Table } from 'primeng/table';
-import { MessageService, ConfirmationService } from 'primeng/api';
+import { ConfirmationService } from 'primeng/api';
 import { UserService } from 'src/app/demo/service/user.service';
+import { ActivatedRoute, Router } from '@angular/router';
+import { Ticket } from '../../api/Ticket';
+import { TicketService } from '../../service/ticket.service';
+import { MessageService } from '../../service/message.service';
+import { Message } from '../../api/Message';
+
 
 
 interface expandedRows {
@@ -17,10 +23,15 @@ interface expandedRows {
     providers: [MessageService, ConfirmationService]
 })
 export class MessageListComponent implements OnInit {
+    ticketId: number = 0;
+    ticket!: Ticket;
+    messages: Message[] = [];
     users: any[] = [];
     availableSupport: any[] = [];
     selectedSupport: any[] = [];
-
+    loading: boolean = true;
+    loadingMessage: boolean = true;
+    comment: string = "";
     customers1: Customer[] = [];
 
     customers2: Customer[] = [];
@@ -47,18 +58,19 @@ export class MessageListComponent implements OnInit {
 
     idFrozen: boolean = false;
 
-    loading: boolean = true;
+   
 
     @ViewChild('filter') filter!: ElementRef;
 
-    constructor(private customerService: CustomerService, private productService: ProductService, private userService: UserService) { }
+    constructor(private customerService: CustomerService, private productService: ProductService, private route: ActivatedRoute, private router: Router, private ticketService: TicketService, private messageService: MessageService) { }
 
     ngOnInit() {
+        this.ticketId = this.route.snapshot.paramMap.get('id') as any as number;
+        this.getTicket();
 
         this.customerService.getCustomersLarge().then(customers => {
             this.customers1 = customers;
             this.loading = false;
-
             // @ts-ignore
             this.customers1.forEach(customer => customer.date = new Date(customer.date));
         });
@@ -90,8 +102,41 @@ export class MessageListComponent implements OnInit {
 
     }
 
+    async getTicket(){
+       //load ticket details
+       let t = await this.ticketService.getTicketById(this.ticketId);
+       if(t!=null) {
+           this.ticket = t;
+           this.getTicketMessages();
+       }
+       else 
+            this.router.navigate(['/tickets']);
+    
+        
+    }
+
+    async getTicketMessages() {
+        console.log("Loading messages...")
+         //load ticket messages (take it in service storage if it's already loaded or perfom server-side request to load it)
+         await this.messageService.getTicketMessages(this.ticketId).subscribe(data => {
+            this.messages = data as Message[];
+            this.loadingMessage = false;
+            this.comment = "";
+            }); 
+                   
+    }
+
     submitComment(){
         //submit comment
+        const data = {
+            "content": this.comment,
+            "ticketId": this.ticketId,
+            "userId": 1
+          }
+        this.messageService.addMessage(data).subscribe(data =>{
+            this.getTicketMessages();
+        })
+        
     }
      
     onSort() {

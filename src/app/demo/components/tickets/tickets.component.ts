@@ -5,6 +5,9 @@ import { Product } from 'src/app/demo/api/product';
 import { ProductService } from 'src/app/demo/service/product.service';
 import { Table } from 'primeng/table';
 import { MessageService, ConfirmationService } from 'primeng/api';
+import { TicketService } from 'src/app/demo/service/ticket.service';
+import { Ticket } from '../../api/Ticket';
+import { ActivatedRoute } from '@angular/router';
 
 interface expandedRows {
     [key: string]: boolean;
@@ -15,7 +18,9 @@ interface expandedRows {
     providers: [MessageService, ConfirmationService]
 })
 export class TicketsComponent implements OnInit {
-
+    
+    tickets: Ticket[] = [];
+    displayTickets: Ticket[] = [];
     ticketStates: any[] = [];
 
     filterState: any = "";
@@ -50,13 +55,12 @@ export class TicketsComponent implements OnInit {
 
     @ViewChild('filter') filter!: ElementRef;
 
-    constructor(private customerService: CustomerService, private productService: ProductService) { }
+    constructor(private customerService: CustomerService, private productService: ProductService, private ticketService: TicketService, private route: ActivatedRoute) { }
 
     ngOnInit() {
         this.customerService.getCustomersLarge().then(customers => {
             this.customers1 = customers;
-            this.loading = false;
-
+            
             // @ts-ignore
             this.customers1.forEach(customer => customer.date = new Date(customer.date));
         });
@@ -90,8 +94,50 @@ export class TicketsComponent implements OnInit {
             { name: 'Ouvert', value: 1 },
             { name: 'Fermé', value: 2 }
         ];
+
+        if(this.tickets.length == 0 || history.state.reload)
+            this.getTickets();
+        
     }
 
+    //load ticket list 
+    async getTickets() {
+       console.log("condition ",this.ticketService.tickets.length == 0 || history.state.reload)
+        if(this.ticketService.tickets.length == 0 || history.state.reload == true)
+        {
+            console.log("Loading tickets... yes")
+            await this.ticketService.getTickets(true).subscribe(data => {
+                this.tickets = data as Ticket[];
+                //store the loaded tickets in service
+                this.ticketService.tickets = this.tickets;
+                console.log("tickets", data)
+                this.loading = false;
+                this.filterTicketsState();
+              }); 
+        }else{
+            this.tickets = this.ticketService.tickets;
+            this.loading = false;
+            console.log("cached data", this.tickets)
+            this.filterTicketsState();
+        }
+                   
+    }
+
+    filterTicketsState(){
+        if(this.filterState.length==0 || this.filterState.length==2)
+        {
+           this.displayTickets =  this.tickets;
+            //display all tickets
+        }else if(this.filterState[0].name =="Ouvert"){
+            //display only opened tickets
+            this.displayTickets =  this.tickets.filter(t=> t.state==="CREATED");
+        }else{
+            //display only closed tickets
+            this.displayTickets =  this.tickets.filter(t=> t.state==="CLOSED");
+        }
+    }
+
+   
     onSort() {
         this.updateRowGroupMetaData();
     }
@@ -144,9 +190,6 @@ export class TicketsComponent implements OnInit {
         this.filter.nativeElement.value = '';
     }
 
-    filterTicketsState(){
-        //perform ticket filter here ....
-        //alert(this.filterState[0].name)
-    }
+    
     
 }

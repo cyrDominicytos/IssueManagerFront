@@ -1,6 +1,6 @@
 import { HttpClient , HttpHeaders} from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { environment } from 'src/environments/environment';
 
 @Injectable()
 export class UserService {
@@ -8,7 +8,7 @@ export class UserService {
     constructor(private http: HttpClient) { }
 
       getUsers() {
-        return this.http.get('http://localhost:8080/users');
+        return this.http.get(environment.apiBaseUrl+'users');
 
       }
 

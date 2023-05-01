@@ -12,7 +12,10 @@ import { IconService } from './demo/service/icon.service';
 import { NodeService } from './demo/service/node.service';
 import { PhotoService } from './demo/service/photo.service';
 import { UserService } from './demo/service/user.service';
+import { TicketService } from './demo/service/ticket.service';
 import { MenuModule } from 'primeng/menu';
+import { MessageService } from './demo/service/message.service';
+import { TagService } from './demo/service/tag.service';
 @NgModule({
     declarations: [
         AppComponent, NotfoundComponent
@@ -25,7 +28,7 @@ import { MenuModule } from 'primeng/menu';
     providers: [
         { provide: LocationStrategy, useClass: HashLocationStrategy },
         CountryService, CustomerService, EventService, IconService, NodeService,
-        PhotoService, ProductService, UserService
+        PhotoService, ProductService, UserService, TicketService, TagService, MessageService
     ],
     bootstrap: [AppComponent]
 })

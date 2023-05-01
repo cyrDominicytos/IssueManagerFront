@@ -12,10 +12,10 @@ import { TabViewModule } from 'primeng/tabview';
 import { FieldsetModule } from 'primeng/fieldset';
 import { MenuModule } from 'primeng/menu';
 import { InputTextModule } from 'primeng/inputtext';
-import { DividerModule } from 'primeng/divider';
+
 import { SplitterModule } from 'primeng/splitter';
 import { PanelModule } from 'primeng/panel';
-
+import { DividerModule } from 'primeng/divider';
 @NgModule({
 	imports: [
 		CommonModule,

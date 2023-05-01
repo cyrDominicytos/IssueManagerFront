@@ -1,12 +1,26 @@
 import { Component, OnInit } from '@angular/core';
 import { SelectItem } from 'primeng/api';
 import { CountryService } from 'src/app/demo/service/country.service';
+import { TagService } from '../../service/tag.service';
+import { TicketService } from '../../service/ticket.service';
+import { Tag, Ticket } from '../../api/Ticket';
+import { Router, NavigationExtras } from '@angular/router';
 
 @Component({
     templateUrl: './createticket.component.html'
 })
 export class CreateTicketComponent implements OnInit {
-    
+    tags: Tag[] = [];
+    ticket: Ticket = {
+        "id":0,
+        "title":"SFH3",
+        "content":"",
+        "state":"CREATED",
+        "user":{"id":0,"name":"","email":"","role":"","created_at":""},
+        "created_at":"",
+        "tags":[]
+    };
+
     types: any[] = [];
     selectedType: any  = {};
     
@@ -46,9 +60,11 @@ export class CreateTicketComponent implements OnInit {
 
     valueKnob = 20;
 
-    constructor(private countryService: CountryService) { }
+    constructor(private countryService: CountryService, private tagService: TagService,private ticketService: TicketService, private router: Router) { }
 
     ngOnInit() {
+        this.getTags();
+
         this.countryService.getCountries().then(countries => {
             this.countries = countries;
         });
@@ -87,11 +103,63 @@ export class CreateTicketComponent implements OnInit {
         this.filteredCountries = filtered;
     }
 
+     //load ticket list 
+     async getTags() {
+       
+        if(this.tagService.tags.length == 0)
+        {
+            console.log("Loading tags...")
+            await this.tagService.getTags().subscribe(data => {
+                this.tags = data as Tag[];
+                //store the loaded tickets in service
+                this.tagService.tags = this.tags;
+                console.log("tags", data)
+                //this.filterTicketsState();
+              }); 
+        }else{
+            //return an existing tags (don't need to perform server-side request)
+            this.tags = this.tagService.tags;
+        }
+                   
+    }
+
+    saveTicket(){
+        console.log("saveTicket Called")
+        const data = {
+            "content": this.ticket.content,
+            "user_id": 1,
+            "title": this.ticket.title,
+            "tagsId": this.ticket.tags.map(t => t.id)
+          }
+        this.ticketService.addTicket(data).subscribe(data =>{
+            alert("success !")
+            this.ticketService.getTickets();
+            //this.router.navigate(['/tickets']);
+            this.goToTicketListRoute(true);
+        })
+        
+    }
+
+     goToTicketListRoute(reload: boolean) {
+        const navigationExtras: NavigationExtras = {
+          state: {
+            reload: reload
+          }
+        };
+        this.router.navigate(['/tickets'], navigationExtras);
+      }
     test(){
         //alert(this.selectedType.id)
     }
 
     submitTicket(){
+        alert(this.ticket.id <= 0)
         //submit ticket here ...
+        if(parseInt(this.ticket.id+"") <= 0){
+            //save ticket
+            this.saveTicket();
+        }else{
+            //update ticket
+        }
     }
 }
