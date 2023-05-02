@@ -8,22 +8,21 @@
                     </div>
                 </div>
                 <div class="text-center mb-5">
-                    <div class="text-3xl font-medium mb-3">Bienvenue !</div>
+                    <div class="text-3xl font-medium mb-3">Bienvenue {{user.name}}!</div>
                     <span class="font-medium">Renseignez les champs pour vous inscrire !</span>
                 </div>
 
                 <div>
                     <label for="name" class="block text-xl font-medium mb-2">Nom et Prénom</label>
-                    <input id="name" type="text" placeholder="Nom complet" pInputText class="w-full md:w-30rem mb-5 form-control" style="padding:1rem">
+                    <input [(ngModel)]="user.name" id="name" type="text" placeholder="Nom complet" pInputText class="w-full md:w-30rem mb-5 form-control" style="padding:1rem">
                     
                     <label for="email1" class="block text-xl font-medium mb-2">Email</label>
-                    <input id="email1" type="text" placeholder="Email" pInputText class="w-full md:w-30rem mb-5 form-control" style="padding:1rem">
+                    <input [(ngModel)]="user.email" id="email1" type="text" placeholder="Email" pInputText class="w-full md:w-30rem mb-5 form-control" style="padding:1rem">
                     
-                    <div ng-If="isAdminOrSupport">
-                        <label for="grade" class="block text-xl font-medium mb-2">Grade {{ isAdminOrSupport }}</label>
+                    <div *ngIf="user.role==='Support'">
+                        <label for="grade" class="block text-xl font-medium mb-2">Grade</label>
                         <input id="grade" type="text" placeholder="Grade" pInputText class="w-full md:w-30rem mb-5 form-control" style="padding:1rem">
-                      </div>
-                      
+                    </div>
                     <label  for="password1" class="block font-medium text-xl mb-2" >Mot de passe</label>
                     <p-password  id="password1" [(ngModel)]="password" placeholder="Password" [toggleMask]="true" styleClass="mb-5" inputStyleClass="w-full p-3 md:w-30rem form-control"></p-password>
 
@@ -31,7 +30,7 @@
                         <label for="rememberme1">J'ai déjà un compte</label>
                         <a [routerLink]="['/auth/login']" class="font-medium no-underline ml-2 text-right cursor-pointer" style="color: var(--primary-color)">Se connecter</a>
                     </div>
-                    <button pButton pRipple label="S'inscrire" class="w-full p-3 text-xl" [routerLink]="['/']"></button>
+                    <button pButton pRipple label="S'inscrire" class="w-full p-3 text-xl" (click)="submit()"></button>
                 </div>
             </div>
         </div>

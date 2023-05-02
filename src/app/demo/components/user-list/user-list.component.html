@@ -109,7 +109,7 @@
 						<td colspan="8">Aucun utilisateur trouvé.</td>
 					</tr>
 				</ng-template>
-				<ng-template pTemplate="loading">
+				<ng-template *ngIf="loading">
 					<tr>
 						<td colspan="8">Chargement des utilisateurs en cours, veuillez patienter.</td>
 					</tr>

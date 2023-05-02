@@ -6,20 +6,22 @@
                 <div>
                     <h5>{{ticket.title}}  </h5>
                     <div class="flex flex-wrap align-items-center" >
-                        <p-chip label="Ouvert" icon="pi pi-check-circle" styleClass="m-1 p-chip p-chip-success "></p-chip>
+                        <p-chip label="{{displayTicketStatus(ticket.state)}}" icon="pi pi-check-circle" styleClass="m-1 p-chip p-chip-success "></p-chip>
                         <p class="text-center">
                             <strong>{{ticket.user.name}}</strong> a ouvert ce ticket le {{ticket.created_at}} · {{messages.length}} commentaire(s)
                         </p>
                     </div>
                 </div>                
                <div>
+                <h5>Status {{ticket.state}}</h5>
+			    <p-toggleButton [(ngModel)]="valToggle" onLabel="Reouvrir" offLabel="Fermer" [style]="{'width': '10em'}" (click)="openOrCloseTicket()" class="p-button-rounded"></p-toggleButton>
                    <button [routerLink]="['/updateTicket', ticket.id]" pButton pRipple type="button" label="Editer" title="Editer ce ticket" icon="pi pi-pencil" class="p-button-rounded"></button>
                    <button [routerLink]="'/addTicket'" pButton pRipple type="button" label="ticket" title="Créer un ticket" icon="pi pi-plus" class="p-button-rounded p-button-success"></button>
                </div> 
 
             </div>
 
-            <p-panel header="'tbetous commented on Jul 24, 2017 •'" [toggleable]="true" class="line-height-3 m-5">
+            <p-panel header="'{{ticket.user.name}} a commenté le ... •'" [toggleable]="true" class="line-height-3 m-5">
                 {{ticket.content}}
             </p-panel>
 							

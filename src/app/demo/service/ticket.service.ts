@@ -48,6 +48,10 @@ export class TicketService {
         console.log("update_tikcet", data)
         return this.http.put(environment.apiBaseUrl+'tickets/'+id, data);
       }
+      //update tiket
+      changeState(id:number){
+        return this.http.put(environment.apiBaseUrl+'tickets/toggleState/'+id, null);
+      }
 
 
 

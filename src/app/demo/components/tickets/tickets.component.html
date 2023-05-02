@@ -40,7 +40,7 @@
 						<td colspan="8">Aucun ticket trouvé.</td>
 					</tr>
 				</ng-template>
-				<ng-template pTemplate="loading">
+				<ng-template *ngIf="loading">
 					<tr>
 						<td colspan="8">Chargement des tickets en cours... Veuillez patienter.</td>
 					</tr>

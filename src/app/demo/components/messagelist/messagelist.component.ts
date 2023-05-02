@@ -32,6 +32,8 @@ export class MessageListComponent implements OnInit {
     loading: boolean = true;
     loadingMessage: boolean = true;
     comment: string = "";
+    valToggle: boolean = true;
+
     customers1: Customer[] = [];
 
     customers2: Customer[] = [];
@@ -102,11 +104,13 @@ export class MessageListComponent implements OnInit {
 
     }
 
-    async getTicket(){
+    async getTicket(reload=true){
        //load ticket details
        let t = await this.ticketService.getTicketById(this.ticketId);
        if(t!=null) {
            this.ticket = t;
+           this.valToggle = t.state=="CREATED" ? false: true;
+           if(reload)
            this.getTicketMessages();
        }
        else 
@@ -138,7 +142,17 @@ export class MessageListComponent implements OnInit {
         })
         
     }
+
+    openOrCloseTicket(){
+        this.ticketService.changeState(this.ticket.id).subscribe((data: any) =>{
+            //this.getTicket(false);
+            this.ticket.state = this.ticket.state=="CREATED" ? "CLOSED" : "CREATED";
+        })
+    }
      
+    displayTicketStatus(str: string){
+        return str=="CREATED" ? "Ouvert" : "Fermé";
+    }
     onSort() {
         this.updateRowGroupMetaData();
     }
