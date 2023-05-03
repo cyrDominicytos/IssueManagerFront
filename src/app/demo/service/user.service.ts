@@ -2,6 +2,7 @@ import { HttpClient , HttpHeaders} from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment } from 'src/environments/environment';
 import { catchError } from 'rxjs/operators';
+import { User } from '../api/User';
 
 @Injectable()
 export class UserService {
@@ -38,5 +39,18 @@ export class UserService {
           );
       }
 
-     
+      get user(): User {
+        let user = sessionStorage.getItem('user');
+        if(user==null)
+            return {"id":0,"name":"","email":"","role":"Visiteur","created_at":""};
+        return  JSON.parse(user);
+      }
+
+      get isLoggedIn(): boolean {
+        return  this.user.id==0 ? false : true;
+      }
+
+      get isSupport(): boolean {
+        return  this.user.id==0 ? false : true;
+      }
 }

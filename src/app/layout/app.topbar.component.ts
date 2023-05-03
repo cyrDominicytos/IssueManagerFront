@@ -2,6 +2,8 @@ import { Component, ElementRef, ViewChild } from '@angular/core';
 import { MenuItem } from 'primeng/api';
 import { LayoutService } from "./service/app.layout.service";
 import { User } from '../demo/api/User';
+import { UserService } from '../demo/service/user.service';
+
 
 @Component({
     selector: 'app-topbar',
@@ -19,7 +21,7 @@ export class AppTopBarComponent {
 
     @ViewChild('topbarmenu') menu!: ElementRef;
 
-    constructor(public layoutService: LayoutService) { }
+    constructor(public layoutService: LayoutService, public userService: UserService) { }
 
     ngOnInit() {
         this.menuItems = [
@@ -40,62 +42,34 @@ export class AppTopBarComponent {
             },
         ];
 
-        this.account = [
-            {
-                label: 'Tickets',
-                items: [
+        if(this.userService.isLoggedIn){          
+                this.account = [
                     {
-                        label: 'Ajouter',
-                        icon: 'pi pi-fw pi-plus'
-                    },
-                    {
-                        label: 'Lister',
-                        icon: 'pi pi-fw pi-list'
+                        label: 'Profil',
+                        items: [
+                        
+                            {
+                                label: 'Editer',
+                                icon: 'pi pi-fw pi-plus',
+                                url: '/#/auth/updateProfile/'+this.userService.user.id
+                            },
+                            {
+                                label: 'Déconnexion',
+                                icon: 'pi pi-fw pi-list',
+                                url: '/auth/logout'
+                            }
+                        ]
                     }
-                ]
-            },
-            {
-                label: 'Utilisateurs',
-                items: [
-                    {
-                        label: 'Ajouter',
-                        icon: 'pi pi-fw pi-plus'
-                    },
-                    {
-                        label: 'Lister',
-                        icon: 'pi pi-fw pi-list'
-                    }
-
-                ]
-            },
-            {
-                label: 'Profil',
-                items: [
-                    {
-                        label: 'Editer',
-                        icon: 'pi pi-fw pi-pencil',
-
-                    },
-                    {
-                        label: 'Map',
-                        icon: 'pi pi-fw pi-map-marker',
-
-                    },
-                    {
-                        label: 'Connexion',
-                        icon: 'pi pi-fw pi-pencil'
-                    }
-                ]
-            }
-        ];
+                ];
+         }
+    
     }
 
     get user(): User {
-        //console.log("userSession",sessionStorage.getItem('user').name);
-        //JSON.parse(sessionStorage.getItem('user')) as User
-        let user = sessionStorage.getItem('user');
-        if(user==null)
-            return {"id":0,"name":"","email":"","role":"Visiteur","created_at":""};
-        return  JSON.parse(user);
+        return  this.userService.user;
+      }
+
+      change(){
+        alert(11)
       }
 }

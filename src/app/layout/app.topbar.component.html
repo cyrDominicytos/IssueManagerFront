@@ -3,40 +3,35 @@
         <img src="assets/layout/images/{{layoutService.config.colorScheme === 'light' ? 'logo-dark' : 'logo-white'}}.svg" alt="logo">
         <span>Ticket App</span>
     </a>
-
-    <button #menubutton class="p-link layout-menu-button layout-topbar-button" (click)="layoutService.onMenuToggle()">
+    <!--<button #menubutton class="p-link layout-menu-button layout-topbar-button" (click)="layoutService.onMenuToggle()">
         <i class="pi pi-bars"></i>
-    </button>
-
-    <button #topbarmenubutton class="p-link layout-topbar-menu-button layout-topbar-button" (click)="layoutService.showProfileSidebar()">
-        <i class="pi pi-ellipsis-v"></i>
-    </button>
-
-    <p-menu #menu [popup]="true" [model]="account"></p-menu>
-    <button type="button" pButton label="Bienvenue, {{ user.role !=='Visiteur' ? user.name+'('+user.role+')':  'Visiteur' }}!" icon="pi pi-chevron-down"  (click)="menu.toggle($event)" style="width:auto"></button>
-
+    </button>-->
+    
     <div #topbarmenu class="layout-topbar-menu" [ngClass]="{'layout-topbar-menu-mobile-active': layoutService.state.profileSidebarVisible}">
-        <button class="p-link layout-topbar-button">
-            <i class="pi pi-calendar"></i>
-            <span>Calendar</span>
+        <button pButton pRipple type="button" label="Ticket" class="p-button-rounded p-button-success" style="min-width: 100px; color: black !important; background-color: white!important; border: none!important;" [routerLink]="'/tickets'">
+            <i class="pi pi-book m-2"></i>
         </button>
-        <button class="p-link layout-topbar-button" title="Cliquez ici pour vous connecter"  [routerLink]="'/auth/login'">
-            <i class="pi pi-user"></i>
-            <span>Login</span>
+        <button pButton pRipple type="button" label="Utilisateur" class="p-button-rounded p-button-success" style="min-width: 100px; color: black !important; background-color: white!important; border: none!important;" [routerLink]="'/users'">
+            <i class="pi pi-user m-2"></i>
         </button>
-        <button class="p-link layout-topbar-button">
-            <i class="pi pi-user"></i>
-            <span>Profile</span>
-        </button>
+
         
-        <button class="p-link layout-topbar-button" [routerLink]="'/documentation'">
-            <i class="pi pi-cog"></i>
-            <span>Settings</span>
-        </button>
-        <!--
-            <p-menu #menu [popup]="true" [model]="menuItems">
-            </p-menu>
-            <button type="button" pButton icon="pi pi-chevron-down" label="Options" (click)="menu.toggle($event)" style="width:auto"></button>
-        -->
+        <P *ngIf="this.userService.isLoggedIn;then loggIn else elseBlock"></P>
+        <ng-template #loggIn>
+            <p-menu #menu [popup]="true" [model]="account"></p-menu>
+            <button   type="button" pButton label="Bienvenue, {{ this.userService.user.name+'('+this.userService.user.role+')' }}!" icon="pi pi-chevron-down"  (click)="menu.toggle($event)" class="p-button-rounded p-button-success" style="min-width: 100px; color: #ccc !important; background-color: white!important; border: none!important;"></button>
+            <button class="p-link layout-topbar-button" title="Se deconnecter" [routerLink]="'/auth/logout'">
+                <i class="pi pi-sign-out"></i>
+                <span>Se deconnecter</span>
+            </button>
+        </ng-template>
+        <ng-template #elseBlock>
+            <button class="p-link layout-topbar-button" title="Se connecter" [routerLink]="'/auth/login'">
+                <i class="pi pi-sign-in"></i>
+                <span>Se connecter</span>
+            </button>
+        </ng-template>
+              
+       
     </div>
 </div>
