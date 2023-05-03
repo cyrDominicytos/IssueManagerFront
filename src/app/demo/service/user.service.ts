@@ -53,4 +53,8 @@ export class UserService {
       get isSupport(): boolean {
         return  this.user.id==0 ? false : true;
       }
+
+      logout(){
+        sessionStorage.removeItem('user');
+      }
 }

@@ -65,6 +65,9 @@ export class AppTopBarComponent {
     
     }
 
+    logout(){
+        this.userService.logout();
+    }
     get user(): User {
         return  this.userService.user;
       }
