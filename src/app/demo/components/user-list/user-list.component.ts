@@ -49,7 +49,7 @@ export class UserListComponent implements OnInit {
 
     @ViewChild('filter') filter!: ElementRef;
 
-    constructor(private customerService: CustomerService, private productService: ProductService, private userService: UserService) { }
+    constructor(private customerService: CustomerService, private productService: ProductService, public userService: UserService) { }
 
     ngOnInit() {
 
@@ -66,14 +66,22 @@ export class UserListComponent implements OnInit {
         this.getUsers();
     }
 
-      async getUsers() {
+    async getUsers() {
           await this.userService.getUsers().subscribe(data => {
             this.users = data as User[];
             console.log("data", data)
             console.log("Users2", this.users[0].name);
             this.loading = false;
           });            
-      }
+    }
+    async deleteUser(id: number) {
+          // this.users = this.users.filter(x => x.id !== id);
+          await this.userService.delete(id).subscribe(data => {
+            this.getUsers();
+          }, (error)=>{
+            console.log(error)
+          });            
+    }
 
     onSort() {
         this.updateRowGroupMetaData();

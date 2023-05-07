@@ -6,6 +6,7 @@ import { TicketService } from '../../service/ticket.service';
 import { Tag, Ticket } from '../../api/Ticket';
 import { Router, NavigationExtras, ActivatedRoute } from '@angular/router';
 import { MessageService } from 'primeng/api';
+import { UserService } from '../../service/user.service';
 
 @Component({
     templateUrl: './createticket.component.html'
@@ -61,7 +62,7 @@ export class CreateTicketComponent implements OnInit {
 
     valueKnob = 20;
 
-    constructor(private countryService: CountryService, private tagService: TagService,private ticketService: TicketService, private router: Router, private notifService: MessageService, private route: ActivatedRoute) { }
+    constructor(private countryService: CountryService, private tagService: TagService,private ticketService: TicketService, private router: Router, private notifService: MessageService, private route: ActivatedRoute, public userService: UserService) { }
 
     ngOnInit() {
         this.getTags();
@@ -131,7 +132,7 @@ export class CreateTicketComponent implements OnInit {
         console.log("saveTicket Called")
         const data = {
             "content": this.ticket.content,
-            "user_id": 1,
+            "user_id": this.userService.user.id,
             "title": this.ticket.title,
             "tagsId": this.ticket.tags.map(t => t.id)
           }
@@ -144,7 +145,7 @@ export class CreateTicketComponent implements OnInit {
         console.log("updateTicket Called")
         const data = {
             "content": this.ticket.content,
-            "user_id": 1,
+            "user_id": this.userService.user.id,
             "title": this.ticket.title,
             "tagsId": this.ticket.tags.map(t => t.id)
           }

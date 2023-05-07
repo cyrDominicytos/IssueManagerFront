@@ -18,7 +18,7 @@
 						<th style="min-width: 12rem">
 							<div class="flex flex-row justify-content-between gap-5 mt-5">
 									<p-selectButton [options]="ticketStates" [(ngModel)]="filterState" [multiple]="true" optionLabel="name" (onChange)="filterTicketsState()"></p-selectButton>
-									<button pButton pRipple type="button" label="Nouveau ticket" class="p-button-rounded p-button-success" style=" max-width: 200px;" [routerLink]="'/addTicket'"></button>
+									<button *ngIf="this.userService.isLoggedIn;" pButton pRipple type="button" label="Nouveau ticket" class="p-button-rounded p-button-success" style=" max-width: 200px;" [routerLink]="'/addTicket'"></button>
 							</div>
 						</th>
 					</tr>

@@ -64,7 +64,7 @@ export class MessageListComponent implements OnInit {
 
     @ViewChild('filter') filter!: ElementRef;
 
-    constructor(private customerService: CustomerService, private productService: ProductService, private route: ActivatedRoute, private router: Router, private ticketService: TicketService, private messageService: MessagesService) { }
+    constructor(private customerService: CustomerService, private productService: ProductService, private route: ActivatedRoute, private router: Router, private ticketService: TicketService, private messageService: MessagesService, public userService: UserService) { }
 
     ngOnInit() {
         this.ticketId = this.route.snapshot.paramMap.get('id') as any as number;
@@ -135,7 +135,7 @@ export class MessageListComponent implements OnInit {
         const data = {
             "content": this.comment,
             "ticketId": this.ticketId,
-            "userId": 1
+            "userId": this.userService.user.id
           }
         this.messageService.addMessage(data).subscribe((data: any) =>{
             this.getTicketMessages();

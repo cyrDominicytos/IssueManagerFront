@@ -8,6 +8,7 @@ import { MessageService, ConfirmationService } from 'primeng/api';
 import { TicketService } from 'src/app/demo/service/ticket.service';
 import { Ticket } from '../../api/Ticket';
 import { ActivatedRoute } from '@angular/router';
+import { UserService } from '../../service/user.service';
 
 interface expandedRows {
     [key: string]: boolean;
@@ -55,7 +56,7 @@ export class TicketsComponent implements OnInit {
 
     @ViewChild('filter') filter!: ElementRef;
 
-    constructor(private customerService: CustomerService, private productService: ProductService, private ticketService: TicketService, private route: ActivatedRoute, private notifService: MessageService) { }
+    constructor(private customerService: CustomerService, private productService: ProductService, private ticketService: TicketService, private route: ActivatedRoute, private notifService: MessageService, public userService: UserService) { }
 
     ngOnInit() {
         this.customerService.getCustomersLarge().then(customers => {

@@ -3,6 +3,7 @@ import { MenuItem } from 'primeng/api';
 import { LayoutService } from "./service/app.layout.service";
 import { User } from '../demo/api/User';
 import { UserService } from '../demo/service/user.service';
+import { Router } from '@angular/router';
 
 
 @Component({
@@ -21,7 +22,7 @@ export class AppTopBarComponent {
 
     @ViewChild('topbarmenu') menu!: ElementRef;
 
-    constructor(public layoutService: LayoutService, public userService: UserService) { }
+    constructor(public layoutService: LayoutService, public userService: UserService, private router: Router) { }
 
     ngOnInit() {
         this.menuItems = [
@@ -52,11 +53,6 @@ export class AppTopBarComponent {
                                 label: 'Editer',
                                 icon: 'pi pi-fw pi-plus',
                                 url: '/#/auth/updateProfile/'+this.userService.user.id
-                            },
-                            {
-                                label: 'Déconnexion',
-                                icon: 'pi pi-fw pi-list',
-                                url: '/auth/logout'
                             }
                         ]
                     }
@@ -67,6 +63,7 @@ export class AppTopBarComponent {
 
     logout(){
         this.userService.logout();
+        this.router.navigate(['/tickets']);
     }
     get user(): User {
         return  this.userService.user;

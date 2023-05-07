@@ -12,10 +12,12 @@
                         </p>
                     </div>
                 </div>                
-               <div>
-                <h5>Status {{ticket.state}}</h5>
-			    <p-toggleButton [(ngModel)]="valToggle" onLabel="Reouvrir" offLabel="Fermer" [style]="{'width': '10em'}" (click)="openOrCloseTicket()" class="p-button-rounded"></p-toggleButton>
-                   <button [routerLink]="['/updateTicket', ticket.id]" pButton pRipple type="button" label="Editer" title="Editer ce ticket" icon="pi pi-pencil" class="p-button-rounded"></button>
+               <div class="flex flex-wrap align-items-center" *ngIf="this.userService.isLoggedIn">
+               
+                    <div *ngIf="(this.userService.isSupport || this.userService.user.id === ticket.user.id)">
+                        <p-toggleButton #loggIn [(ngModel)]="valToggle" onLabel="Reouvrir" offLabel="Fermer" [style]="{'width': '10em'}" (click)="openOrCloseTicket()" class="p-button-rounded"></p-toggleButton>
+                        <button [routerLink]="['/updateTicket', ticket.id]" pButton pRipple type="button" label="Editer" title="Editer ce ticket" icon="pi pi-pencil" class="p-button-rounded"></button> 
+                    </div>
                    <button [routerLink]="'/addTicket'" pButton pRipple type="button" label="ticket" title="Créer un ticket" icon="pi pi-plus" class="p-button-rounded p-button-success"></button>
                </div> 
 
@@ -50,10 +52,10 @@
     <div class="sm:col-4 md:col-3">
         <div class="flexS flex-columnS">
             
-            <h5>Supports assignés</h5>
+            <!--<h5>Supports assignés</h5>
             <div class="flex flex-wrap gap-2 mb-2 pb-2">
                 <p-chip label="Onyama Limbas" image="assets/demo/images/avatar/onyamalimba.png" styleClass="m-1"></p-chip>
-            </div>
+            </div>-->
             <div class="flex flex-wrap gap-2 mb-2 pb-2">
                 <!--<p-multiSelect [options]="availableSupport" [(ngModel)]="selectedSupport" placeholder="assigner à des suppports" optionLabel="name" class="multiselect-custom" display="chip">
                     <ng-template let-country pTemplate="item">
@@ -62,7 +64,6 @@
                         </div>
                     </ng-template>
                 </p-multiSelect>-->
-                <button  pButton pRipple type="button" title="Attribuer le ticket aux supports" icon="pi pi-plus" class="p-button p-button-success"></button>
             </div>
             <hr/>
 
@@ -78,7 +79,7 @@
                         </div>
                     </ng-template>
                 </p-multiSelect>-->
-                <button  pButton pRipple type="button" title="Ajouter des tags aux ticket" icon="pi pi-plus" class="p-button p-button-success"></button>
+               <!-- <button  pButton pRipple type="button" title="Ajouter des tags aux ticket" icon="pi pi-plus" class="p-button p-button-success"></button>-->
             </div>
             <hr/>
 

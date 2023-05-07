@@ -30,6 +30,7 @@ export class UserService {
       updateSupport(data:any, id:number){
         return this.http.put(environment.apiBaseUrl+'supports/'+id, data);
       }
+
       //log in user/support
       login(data:any){
         return this.http.post(environment.apiBaseUrl+'users/login', data).pipe(
@@ -51,10 +52,19 @@ export class UserService {
       }
 
       get isSupport(): boolean {
-        return  this.user.id==0 ? false : true;
+        return  this.user.role ==="Support" ? true : false;
       }
 
       logout(){
         sessionStorage.removeItem('user');
+      }
+
+       //delete  user/support
+       delete(id:number){
+        return this.http.delete(environment.apiBaseUrl+'users/'+id).pipe(
+          catchError(error => {
+            throw new Error('Unable to delete' +error);
+          })
+          );
       }
 }
