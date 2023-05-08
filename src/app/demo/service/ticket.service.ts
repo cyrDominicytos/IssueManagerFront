@@ -53,16 +53,6 @@ export class TicketService {
         return this.http.put(environment.apiBaseUrl+'tickets/toggleState/'+id, null);
       }
 
-
-
-
-
-
-
-
-
-
-
       showInfoViaToast(message: string) {
         this.notif.add({ key: 'tst', severity: 'info', summary: 'Info Message', detail: message});
     }

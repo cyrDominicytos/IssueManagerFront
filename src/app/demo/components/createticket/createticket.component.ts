@@ -15,7 +15,7 @@ export class CreateTicketComponent implements OnInit {
     tags: Tag[] = [];
     ticket: Ticket = {
         "id":0,
-        "title":"SFH3",
+        "title":"",
         "content":"",
         "state":"CREATED",
         "user":{"id":0,"name":"","email":"","role":"","created_at":""},

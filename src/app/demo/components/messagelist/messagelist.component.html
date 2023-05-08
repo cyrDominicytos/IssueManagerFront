@@ -6,7 +6,8 @@
                 <div>
                     <h5>{{ticket.title}}  </h5>
                     <div class="flex flex-wrap align-items-center" >
-                        <p-chip label="{{displayTicketStatus(ticket.state)}}" icon="pi pi-check-circle" styleClass="m-1 p-chip p-chip-success "></p-chip>
+                        <p-chip *ngIf="ticket.state==='CREATED'" label="{{displayTicketStatus(ticket.state)}}"  icon="pi pi-check-circle" styleClass="my-chip-open"></p-chip>
+                        <p-chip *ngIf="ticket.state!=='CREATED'" label="{{displayTicketStatus(ticket.state)}}"  icon="pi pi-check-circle" styleClass="my-chip-close"></p-chip>
                         <p class="text-center">
                             <strong>{{ticket.user.name}}</strong> a ouvert ce ticket le {{ticket.created_at}} · {{messages.length}} commentaire(s)
                         </p>
@@ -23,7 +24,7 @@
 
             </div>
 
-            <p-panel header="'{{ticket.user.name}} a commenté le ... •'" [toggleable]="true" class="line-height-3 m-5">
+            <p-panel header="Détails du ticket" [toggleable]="true" class="line-height-3 m-5">
                 {{ticket.content}}
             </p-panel>
 							

@@ -49,7 +49,7 @@ export class UserListComponent implements OnInit {
 
     @ViewChild('filter') filter!: ElementRef;
 
-    constructor(private customerService: CustomerService, private productService: ProductService, public userService: UserService) { }
+    constructor(private customerService: CustomerService, private productService: ProductService, public userService: UserService, private notifService: MessageService) { }
 
     ngOnInit() {
 
@@ -76,11 +76,33 @@ export class UserListComponent implements OnInit {
     }
     async deleteUser(id: number) {
           // this.users = this.users.filter(x => x.id !== id);
-          await this.userService.delete(id).subscribe(data => {
-            this.getUsers();
-          }, (error)=>{
-            console.log(error)
-          });            
+          if(id==this.userService.user.id)
+          {
+            this.notification("Vous ne pouvez pas supprimer cet utilisateur !", "error");
+          }else{
+            await this.userService.delete(id).subscribe(data => {
+                this.getUsers();
+                this.notification("Utilisateur supprimé avec succès !")
+              }, error=>{
+                console.log("error code", error.status)
+                switch (error.status) {
+                    case 404:
+                        this.notification("Il semble que cet utilisateur n'existe pas !", "error")
+                        break;
+                    case 403:
+                        this.notification("Ce utilisateur ne peut être supprimé car il possède de ticket !", "error")
+                        break;
+                    default:
+                        this.notification("Erreur serveur, assurez-vous que votre serveur est bien en marche", "error")
+                        break;
+                }
+              });    
+          }            
+    }
+
+    notification(message: string, type="success"){
+        this.notifService.add({ key: 'tst', severity: type, summary: 'Success Message', detail: message});
+        console.log("notif");
     }
 
     onSort() {

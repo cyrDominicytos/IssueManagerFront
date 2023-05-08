@@ -61,10 +61,6 @@ export class UserService {
 
        //delete  user/support
        delete(id:number){
-        return this.http.delete(environment.apiBaseUrl+'users/'+id).pipe(
-          catchError(error => {
-            throw new Error('Unable to delete' +error);
-          })
-          );
+        return this.http.delete(environment.apiBaseUrl+'users/'+id);
       }
 }

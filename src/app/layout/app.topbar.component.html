@@ -1,7 +1,6 @@
 <div class="layout-topbar">
     <a class="layout-topbar-logo" routerLink="">
-        <img src="assets/layout/images/{{layoutService.config.colorScheme === 'light' ? 'logo-dark' : 'logo-white'}}.svg" alt="logo">
-        <span>Ticket App</span>
+        <img src="assets/demo/images/logo/logo1.PNG" alt="logo" style="width:200px; height:55px">
     </a>
     <!--<button #menubutton class="p-link layout-menu-button layout-topbar-button" (click)="layoutService.onMenuToggle()">
         <i class="pi pi-bars"></i>
@@ -19,8 +18,10 @@
             <button pButton pRipple type="button" label="Utilisateur" class="p-button-rounded p-button-success" style="min-width: 100px; color: black !important; background-color: white!important; border: none!important;" [routerLink]="'/users'">
                 <i class="pi pi-user m-2"></i>
             </button>
-            <p-menu #menu [popup]="true" [model]="account"></p-menu>
+            <!--<p-menu #menu [popup]="true" [model]="account"></p-menu>
             <button   type="button" pButton label="Bienvenue, {{ this.userService.user.name+'('+this.userService.user.role+')' }}!" icon="pi pi-chevron-down"  (click)="menu.toggle($event)" class="p-button-rounded p-button-success" style="min-width: 100px; color: #ccc !important; background-color: white!important; border: none!important;"></button>
+            -->
+            <button   type="button" pButton label="Bienvenue, {{ this.userService.user.name+'('+this.userService.user.role+')' }}!" class="p-button-rounded p-button-success" style="min-width: 100px; color: #197e9c !important; background-color: white!important; border: none!important; pointer-events: none;"></button>
             <button class="p-link layout-topbar-button" title="Se deconnecter" (click)="logout()">
                 <i class="pi pi-sign-out"></i>
                 <span>Se deconnecter</span>
