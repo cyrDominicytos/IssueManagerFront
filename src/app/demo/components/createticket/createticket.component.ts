@@ -20,7 +20,8 @@ export class CreateTicketComponent implements OnInit {
         "state":"CREATED",
         "user":{"id":0,"name":"","email":"","role":"","created_at":""},
         "created_at":"",
-        "tags":[]
+        "tags":[],
+        "assignedSupports":[]
     };
     ticketId: number = 0;
     types: any[] = [];

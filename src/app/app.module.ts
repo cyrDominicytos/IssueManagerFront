@@ -19,6 +19,7 @@ import { MenuModule } from 'primeng/menu';
 import { MessagesService } from './demo/service/message.service';
 import { TagService } from './demo/service/tag.service';
 import { MessageService } from 'primeng/api';
+import { SupportService } from './demo/service/support.service';
 
 @NgModule({
     declarations: [
@@ -33,7 +34,7 @@ import { MessageService } from 'primeng/api';
     providers: [
         { provide: LocationStrategy, useClass: HashLocationStrategy },
         CountryService, CustomerService, EventService, IconService, NodeService,
-        PhotoService, ProductService, UserService, TicketService, TagService, MessagesService, MessageService
+        PhotoService, ProductService, UserService, TicketService, TagService, MessagesService, MessageService,SupportService
     ],
     bootstrap: [AppComponent]
 })

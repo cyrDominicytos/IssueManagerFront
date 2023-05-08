@@ -6,6 +6,8 @@ export interface Ticket {
     created_at: string;
     user:       User;
     tags:       Tag[];
+   /*assignedSupports: Support[];*/
+    assignedSupports: User[];
 }
 
 export interface Tag {
@@ -17,6 +19,14 @@ export interface Tag {
 }
 
 export interface User {
+    id:         number;
+    name:       string;
+    email:      string;
+    role:       string;
+    created_at: string;
+}
+
+export interface Support {
     id:         number;
     name:       string;
     email:      string;

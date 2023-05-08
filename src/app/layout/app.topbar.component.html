@@ -2,25 +2,21 @@
     <a class="layout-topbar-logo" routerLink="">
         <img src="assets/demo/images/logo/logo1.PNG" alt="logo" style="width:200px; height:55px">
     </a>
-    <!--<button #menubutton class="p-link layout-menu-button layout-topbar-button" (click)="layoutService.onMenuToggle()">
-        <i class="pi pi-bars"></i>
-    </button>-->
-    
+       
     <div #topbarmenu class="layout-topbar-menu" [ngClass]="{'layout-topbar-menu-mobile-active': layoutService.state.profileSidebarVisible}">
         <button pButton pRipple type="button" label="Ticket" class="p-button-rounded p-button-success" style="min-width: 100px; color: black !important; background-color: white!important; border: none!important;" [routerLink]="'/tickets'">
             <i class="pi pi-book m-2"></i>
         </button>
-       
-
-        
+               
         <P *ngIf="this.userService.isLoggedIn;then loggIn else elseBlock"></P>
         <ng-template #loggIn>
             <button pButton pRipple type="button" label="Utilisateur" class="p-button-rounded p-button-success" style="min-width: 100px; color: black !important; background-color: white!important; border: none!important;" [routerLink]="'/users'">
                 <i class="pi pi-user m-2"></i>
             </button>
-            <!--<p-menu #menu [popup]="true" [model]="account"></p-menu>
-            <button   type="button" pButton label="Bienvenue, {{ this.userService.user.name+'('+this.userService.user.role+')' }}!" icon="pi pi-chevron-down"  (click)="menu.toggle($event)" class="p-button-rounded p-button-success" style="min-width: 100px; color: #ccc !important; background-color: white!important; border: none!important;"></button>
-            -->
+            <button pButton pRipple type="button" label="Créer support" class="p-button-rounded p-button-success" style="min-width: 100px; color: black !important; background-color: white!important; border: none!important;" [routerLink]="'/auth/register'">
+                <i class="pi pi-plus m-2"></i>
+            </button>
+           
             <button   type="button" pButton label="Bienvenue, {{ this.userService.user.name+'('+this.userService.user.role+')' }}!" class="p-button-rounded p-button-success" style="min-width: 100px; color: #197e9c !important; background-color: white!important; border: none!important; pointer-events: none;"></button>
             <button class="p-link layout-topbar-button" title="Se deconnecter" (click)="logout()">
                 <i class="pi pi-sign-out"></i>

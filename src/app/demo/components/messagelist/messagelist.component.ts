@@ -1,14 +1,10 @@
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
-import { Customer, Representative } from 'src/app/demo/api/customer';
-import { CustomerService } from 'src/app/demo/service/customer.service';
-import { Product } from 'src/app/demo/api/product';
-import { ProductService } from 'src/app/demo/service/product.service';
-import { Table } from 'primeng/table';
 import { ConfirmationService } from 'primeng/api';
 import { UserService } from 'src/app/demo/service/user.service';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Ticket } from '../../api/Ticket';
+import { Support, Ticket } from '../../api/Ticket';
 import { TicketService } from '../../service/ticket.service';
+import { SupportService } from '../../service/support.service';
 import { MessagesService } from '../../service/message.service';
 import { Message } from '../../api/Message';
 
@@ -24,99 +20,49 @@ interface expandedRows {
 })
 export class MessageListComponent implements OnInit {
     ticketId: number = 0;
-    ticket!: Ticket;
+    ticket: Ticket = {
+        "id":0,
+        "title":"",
+        "content":"",
+        "state":"CREATED",
+        "user":{"id":0,"name":"","email":"","role":"","created_at":""},
+        "created_at":"",
+        "tags":[],
+        "assignedSupports":[]
+    };
+
     messages: Message[] = [];
     users: any[] = [];
-    availableSupport: any[] = [];
-    selectedSupport: any[] = [];
+    availableSupport: Support[] = [];
+    selectedSupport: Support[] = [];
     loading: boolean = true;
     loadingMessage: boolean = true;
     comment: string = "";
     valToggle: boolean = true;
 
-    customers1: Customer[] = [];
-
-    customers2: Customer[] = [];
-
-    customers3: Customer[] = [];
-
-    selectedCustomers1: Customer[] = [];
-
-    selectedCustomer: Customer = {};
-
-    representatives: Representative[] = [];
-
     statuses: any[] = [];
 
-    products: Product[] = [];
-
-    rowGroupMetadata: any;
-
-    expandedRows: expandedRows = {};
-
-    activityValues: number[] = [0, 100];
-
-    isExpanded: boolean = false;
-
-    idFrozen: boolean = false;
-
-   
-
     @ViewChild('filter') filter!: ElementRef;
-
-    constructor(private customerService: CustomerService, private productService: ProductService, private route: ActivatedRoute, private router: Router, private ticketService: TicketService, private messageService: MessagesService, public userService: UserService) { }
+    constructor(private route: ActivatedRoute, private router: Router, private ticketService: TicketService, private messageService: MessagesService, public userService: UserService, private supportService: SupportService) { }
 
     ngOnInit() {
         this.ticketId = this.route.snapshot.paramMap.get('id') as any as number;
-        this.getTicket();
-
-        this.customerService.getCustomersLarge().then(customers => {
-            this.customers1 = customers;
-            this.loading = false;
-            // @ts-ignore
-            this.customers1.forEach(customer => customer.date = new Date(customer.date));
-        });
-        this.customerService.getCustomersMedium().then(customers => this.customers2 = customers);
-        this.customerService.getCustomersLarge().then(customers => this.customers3 = customers);
-        this.productService.getProductsWithOrdersSmall().then(data => this.products = data);
-
-        this.representatives = [
-            { name: 'Amy Elsner', image: 'amyelsner.png' },
-            { name: 'Anna Fali', image: 'annafali.png' },
-            { name: 'Asiya Javayant', image: 'asiyajavayant.png' },
-            { name: 'Bernardo Dominic', image: 'bernardodominic.png' },
-            { name: 'Elwin Sharvill', image: 'elwinsharvill.png' },
-            { name: 'Ioni Bowcher', image: 'ionibowcher.png' },
-            { name: 'Ivan Magalhaes', image: 'ivanmagalhaes.png' },
-            { name: 'Onyama Limba', image: 'onyamalimba.png' },
-            { name: 'Stephen Shaw', image: 'stephenshaw.png' },
-            { name: 'XuXue Feng', image: 'xuxuefeng.png' }
-        ];
-
-        this.statuses = [
-            { label: 'Unqualified', value: 'unqualified' },
-            { label: 'Qualified', value: 'qualified' },
-            { label: 'New', value: 'new' },
-            { label: 'Negotiation', value: 'negotiation' },
-            { label: 'Renewal', value: 'renewal' },
-            { label: 'Proposal', value: 'proposal' }
-        ];
-
+        this.getTicket(true);
     }
 
-    async getTicket(reload=true){
+    async getTicket(reload=false){
        //load ticket details
-       let t = await this.ticketService.getTicketById(this.ticketId);
+       let t = await this.ticketService.getTicketById(this.ticketId, reload);
        if(t!=null) {
            this.ticket = t;
            this.valToggle = t.state=="CREATED" ? false: true;
-           if(reload)
-           this.getTicketMessages();
+           if(reload){
+               this.getTicketMessages();
+               this.getSupports()
+           }
        }
        else 
-            this.router.navigate(['/tickets']);
-    
-        
+            this.router.navigate(['/tickets']); 
     }
 
     async getTicketMessages() {
@@ -126,8 +72,16 @@ export class MessageListComponent implements OnInit {
             this.messages = data as Message[];
             this.loadingMessage = false;
             this.comment = "";
-            }); 
-                   
+            });  
+    }
+
+     //load available supports 
+     async getSupports() {
+            console.log("Loading supports...")
+            await this.supportService.getAvailableSupports(this.ticket.id).subscribe(data => {
+                this.availableSupport = data as Support[];
+                console.log("supports", data)
+              });           
     }
 
     submitComment(){
@@ -142,67 +96,22 @@ export class MessageListComponent implements OnInit {
         })
         
     }
+    submitAssignedSupports(){
+        //affect ticket to a support
+        console.log("assign", this.selectedSupport);
+        const ids = this.selectedSupport.map(item => item.id);
+        this.ticketService.addSupports(ids, this.ticket.id).subscribe((data: any) =>{
+            this.getTicket(true);
+        })
+    }
 
     openOrCloseTicket(){
         this.ticketService.changeState(this.ticket.id).subscribe((data: any) =>{
-            //this.getTicket(false);
             this.ticket.state = this.ticket.state=="CREATED" ? "CLOSED" : "CREATED";
         })
     }
      
     displayTicketStatus(str: string){
         return str=="CREATED" ? "Ouvert" : "Fermé";
-    }
-    onSort() {
-        this.updateRowGroupMetaData();
-    }
-
-    updateRowGroupMetaData() {
-        this.rowGroupMetadata = {};
-
-        if (this.customers3) {
-            for (let i = 0; i < this.customers3.length; i++) {
-                const rowData = this.customers3[i];
-                const representativeName = rowData?.representative?.name || '';
-
-                if (i === 0) {
-                    this.rowGroupMetadata[representativeName] = { index: 0, size: 1 };
-                }
-                else {
-                    const previousRowData = this.customers3[i - 1];
-                    const previousRowGroup = previousRowData?.representative?.name;
-                    if (representativeName === previousRowGroup) {
-                        this.rowGroupMetadata[representativeName].size++;
-                    }
-                    else {
-                        this.rowGroupMetadata[representativeName] = { index: i, size: 1 };
-                    }
-                }
-            }
-        }
-    }
-
-    expandAll() {
-        if (!this.isExpanded) {
-            this.products.forEach(product => product && product.name ? this.expandedRows[product.name] = true : '');
-
-        } else {
-            this.expandedRows = {};
-        }
-        this.isExpanded = !this.isExpanded;
-    }
-
-    formatCurrency(value: number) {
-        return value.toLocaleString('en-US', { style: 'currency', currency: 'USD' });
-    }
-
-    onGlobalFilter(table: Table, event: Event) {
-        table.filterGlobal((event.target as HTMLInputElement).value, 'contains');
-    }
-
-    clear(table: Table) {
-        table.clear();
-        this.filter.nativeElement.value = '';
-    }
-    
+    }    
 }

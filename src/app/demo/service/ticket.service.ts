@@ -53,6 +53,13 @@ export class TicketService {
         return this.http.put(environment.apiBaseUrl+'tickets/toggleState/'+id, null);
       }
 
+        //assign supports to a tiket
+        addSupports(ids:any, id:number){
+          return this.http.put(environment.apiBaseUrl+'tickets/assign_support/'+id, ids);
+        }
+
+
+
       showInfoViaToast(message: string) {
         this.notif.add({ key: 'tst', severity: 'info', summary: 'Info Message', detail: message});
     }

@@ -52,38 +52,31 @@
     </div>
     <div class="sm:col-4 md:col-3">
         <div class="flexS flex-columnS">
-            
-            <!--<h5>Supports assignés</h5>
-            <div class="flex flex-wrap gap-2 mb-2 pb-2">
-                <p-chip label="Onyama Limbas" image="assets/demo/images/avatar/onyamalimba.png" styleClass="m-1"></p-chip>
-            </div>-->
-            <div class="flex flex-wrap gap-2 mb-2 pb-2">
-                <!--<p-multiSelect [options]="availableSupport" [(ngModel)]="selectedSupport" placeholder="assigner à des suppports" optionLabel="name" class="multiselect-custom" display="chip">
-                    <ng-template let-country pTemplate="item">
-                        <div class="flex align-items-center">
-                            <span [class]="'ml-2 generic-badge'" [style]="'color='+country.color +' background='+country.background">{{country.name}}</span>
-                        </div>
-                    </ng-template>
-                </p-multiSelect>-->
+            <div class="card">
+                <h5>Supports assignés</h5>
+                <div class="flex flex-wrap gap-2 pb-2">
+                    <p-chip *ngFor="let support of ticket.assignedSupports" label="{{support.name}}" image="assets/demo/images/avatar/onyamalimba.png" styleClass="m-1"></p-chip>
+                    <p *ngIf="ticket.assignedSupports.length===0" >Aucun support assigné !</p>
+                </div> 
+                <p-fieldset *ngIf="this.userService.isSupport" legend="Ajouter" [toggleable]="true" class="line-height-3 m-0">
+                    <p-multiSelect [options]="availableSupport" [(ngModel)]="selectedSupport" placeholder="assigner à des suppports" optionLabel="name" class="multiselect-custom" display="chip">
+                        <ng-template let-support pTemplate="item">
+                            <div class="flex align-items-center">
+                                <span [class]="'ml-2 generic-badge'" >{{support.name}}</span>
+                            </div>
+                        </ng-template>
+                    </p-multiSelect>
+                    <button  pButton pRipple type="button" label="Valider" title="Assigner ce ticket aux supports selectionnés !" icon="pi pi-plus" class="p-button-rounded p-button-success mt-5" style="width:100%" (click)="submitAssignedSupports()"></button>
+                </p-fieldset>
             </div>
             <hr/>
 
-            <h5>Tags ajoutés</h5>
-            <div class="flex flex-wrap gap-2 pb-2">
-                <span *ngFor="let tag of ticket.tags" [class]="'m-2 customer-badge'" [style.color]="tag.textColor"  [style.background]="tag.backgroundColor">{{tag.name}}</span>
-            </div> 
-            <div class="flex flex-wrap gap-2 mb-2 pb-2">
-                <!--<p-multiSelect [options]="availableSupport" [(ngModel)]="selectedSupport" placeholder="assigner à des suppports" optionLabel="name" class="multiselect-custom" display="chip">
-                    <ng-template let-country pTemplate="item">
-                        <div class="flex align-items-center">
-                            <span [class]="'ml-2 generic-badge'" [style]="'color='+country.color +' background='+country.background">{{country.name}}</span>
-                        </div>
-                    </ng-template>
-                </p-multiSelect>-->
-               <!-- <button  pButton pRipple type="button" title="Ajouter des tags aux ticket" icon="pi pi-plus" class="p-button p-button-success"></button>-->
+            <div class="card">
+                <h5>Tags ajoutés</h5>
+                <div class="flex flex-wrap gap-2 pb-2">
+                    <span *ngFor="let tag of ticket.tags" [class]="'m-2 customer-badge'" [style.color]="tag.textColor"  [style.background]="tag.backgroundColor">{{tag.name}}</span>
+                </div> 
             </div>
-            <hr/>
-
         </div>
     </div>
 </div>

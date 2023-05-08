@@ -21,7 +21,7 @@ import { PanelModule } from 'primeng/panel';
 import { DividerModule } from 'primeng/divider';
 import { ChipModule } from 'primeng/chip';
 import { TagModule } from 'primeng/tag';
-
+import { FieldsetModule } from 'primeng/fieldset';
 @NgModule({
 	imports: [
 		CommonModule,
@@ -34,18 +34,18 @@ import { TagModule } from 'primeng/tag';
 		InputTextModule,
 		ToggleButtonModule,
 		RippleModule,
-		MultiSelectModule,
 		DropdownModule,
 		ProgressBarModule,
+		
+		MultiSelectModule,
 		ToastModule,
-
-
 		DividerModule,
 		SplitterModule,
 		PanelModule,
 		InputTextareaModule,
 		ChipModule,
-		TagModule
+		TagModule,
+		FieldsetModule
 	],
 	declarations: [MessageListComponent]
 })
